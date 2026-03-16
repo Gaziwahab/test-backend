@@ -41,7 +41,16 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true 
     console.error('MongoDB connection error:', err.message);
     process.exit(1);
   });
-
+async function connecttoDB() {
+  try {
+    await mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('MongoDB connection error:', err.message);
+    process.exit(1);
+  }
+}
+connecttoDB();
 app.get('/api/health', (req, res) => res.json({ ok: true, msg: 'Resultify backend running' }));
 
 // Get uploaded batches from DB

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "seed": "node seed.js"
+    "seed": "node seed.js",
+    "vercel-start":"node index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
