@@ -217,23 +217,27 @@ app.get('/api/admin/me', async (req, res) => {
   }
 });
 
-const server = app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+// Export app for Vercel serverless functions
+module.exports = app;
 
-server.on('error', (err) => {
-  console.error('Server listen error:', err);
-  if (err && err.code === 'EADDRINUSE') {
-    console.error(`Port ${PORT} is already in use. Kill the process using it or set PORT to a different value.`);
-  }
-  // exit with failure so supervisors can restart or you can inspect logs
-  process.exit(1);
-});
+// For local development: listen on port if not in serverless environment
+if (process.env.VERCEL !== '1' && require.main === module) {
+  const server = app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
-process.on('unhandledRejection', (reason, p) => {
-  console.error('Unhandled Rejection at:', p, 'reason:', reason);
-});
+  server.on('error', (err) => {
+    console.error('Server listen error:', err);
+    if (err && err.code === 'EADDRINUSE') {
+      console.error(`Port ${PORT} is already in use. Kill the process using it or set PORT to a different value.`);
+    }
+    process.exit(1);
+  });
 
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception thrown:', err);
-  // optionally exit or attempt graceful shutdown
-  process.exit(1);
-});
+  process.on('unhandledRejection', (reason, p) => {
+    console.error('Unhandled Rejection at:', p, 'reason:', reason);
+  });
+
+  process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception thrown:', err);
+    process.exit(1);
+  });
+}
