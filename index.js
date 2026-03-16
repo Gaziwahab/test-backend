@@ -23,7 +23,7 @@ app.use(cors({
     'http://localhost:5173',  // Local development
     'http://localhost:3000',  // Local production build
     'http://localhost:8080',  // Another local development port
-    'https://test-frontend-one-coral.vercel.app/', // Production deployment
+    'https://test-frontend-one-coral.vercel.app', // Production deployment
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
